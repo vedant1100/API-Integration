@@ -1,5 +1,5 @@
 /*
- Unlike earlier model of photosExample, here a custom made model is created
+ Unlike earlier model of postsExample, here a custom made model is created
  inside this file named photos which uses specific tags of the api.
 */
 
