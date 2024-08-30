@@ -21,14 +21,14 @@ Basic API with direct key value pair
 Link for api: https://jsonplaceholder.typicode.com/posts
 Test the api from postman and integrate the model using JsontoDart plugin in android studio.
 
-## 1. Photos API
+## 2. Photos API
 API with direct key value pair
 Link for api: https://jsonplaceholder.typicode.com/photos
 Test the api from postman and integrate the model using JsontoDart plugin in android 
 
-## 1. Users API
+## 3. Users API
 Advanced API with multiple nested objects and key value pair
 Link for api: https://jsonplaceholder.typicode.com/users
 Test the api from postman and integrate the model using JsontoDart plugin in android 
 
-## Video reference link: https://www.youtube.com/watch?v=Q-4wfvNLtpo&list=PLFyjjoCMAPtzgITDreXNNkSWLKbd1wf51&index=10
+### Video reference link: https://www.youtube.com/watch?v=Q-4wfvNLtpo&list=PLFyjjoCMAPtzgITDreXNNkSWLKbd1wf51&index=10
