@@ -1,5 +1,6 @@
 import 'package:apitutorial/photosExample.dart';
 import 'package:apitutorial/postsExample.dart';
+import 'package:apitutorial/productsExample.dart';
 import 'package:apitutorial/usersExample.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(),
-      home: const photosExample(),
+      home: const productsExample(),
     );
   }
 }

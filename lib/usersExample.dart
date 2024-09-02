@@ -1,6 +1,6 @@
 /*
-API is parsed using plugin JsonToDart convertor and model named PostsModel
- is created located in file postsModel.dart.
+API is parsed using plugin JsonToDart convertor and model named UsersModel
+ is created located in file usersModel.dart.
  File location: C:\Users\Admin\StudioProjects\apitutorial\lib\models\userModel.dart
 */
 
