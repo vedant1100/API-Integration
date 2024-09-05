@@ -3,30 +3,27 @@
  File location: C:\Users\Admin\StudioProjects\apitutorial\lib\models\postsModel.dart
 */
 import 'dart:convert';
+import 'package:apitutorial/Services/apiController.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'models/postsModel.dart';
 
-class postsExample extends StatefulWidget {
-  const postsExample({super.key});
+class PostsExample extends StatefulWidget {
+  const PostsExample({super.key});
 
   @override
-  State<postsExample> createState() => _postsExampleState();
+  State<PostsExample> createState() => _PostsExampleState();
 }
 
-class _postsExampleState extends State<postsExample> {
+class _PostsExampleState extends State<PostsExample> {
+  List<Datum>? dataList = [];
 
-  List<PostsModel> postList=[];
-  Future<List<PostsModel>> getPostApi() async{
-    final response= await http.get(Uri.parse("https://jsonplaceholder.typicode.com/posts"));
-    var data=jsonDecode(response.body.toString());
-
-    if(response.statusCode==200){
-      for(Map i in data){
-        postList.add(PostsModel.fromJson(i));
-      }
-    }
-    return postList;
+  Future<void> fetchPostsApi() async {
+    await Provider.of<PostsApiController>(context, listen: false).getPostApi();
+    var postApi = Provider.of<PostsApiController>(context, listen: false).productsModel?.data;
+    dataList = postApi;
+    // print("List : $dataList");
   }
 
   @override
@@ -35,38 +32,34 @@ class _postsExampleState extends State<postsExample> {
       appBar: AppBar(
         title: const Text('Posts Api'),
       ),
-
       body: Column(
         children: [
           Expanded(
             child: FutureBuilder(
-                future: getPostApi(),
-                builder: (context, snapshot){
-                  if(!snapshot.hasData){
-                    return const Center(
-                      child: SizedBox(
-                        height: 50, width: 50,
-                          child: CircularProgressIndicator()),
-                    );
-                  }
-                  else{
-                    return ListView.builder(
-                      itemCount: postList.length,
-                        itemBuilder: (context,index){
-                          return Card(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(postList[index].title.toString()),
-                              ],
-                            ),
-                          );
-                        }
-                    );
-                  }
+                future: fetchPostsApi(),
+                builder: (context, snapshot) {
+                  return snapshot.connectionState == ConnectionState.waiting
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        ) :
+                      ListView.builder(
+                          itemCount: dataList?.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Name', style: TextStyle(fontSize: 20),),
+                                  Text("${dataList?[index].name}"),
+                                  const Text('Color', style: TextStyle(fontSize: 20),),
+                                  Text('${dataList?[index].color}')
+                                ],
+                              ),
+                            );
+                          });
                 }
-            ),
+                ),
           )
         ],
       ),

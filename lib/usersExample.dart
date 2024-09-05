@@ -5,9 +5,11 @@ API is parsed using plugin JsonToDart convertor and model named UsersModel
 */
 
 import 'dart:convert';
+import 'package:apitutorial/Services/apiController.dart';
 import 'package:apitutorial/models/userModel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class usersExample extends StatefulWidget {
   const usersExample({super.key});
@@ -17,20 +19,20 @@ class usersExample extends StatefulWidget {
 }
 
 class _usersExampleState extends State<usersExample> {
-  
- List<UserModel> usersList=[];
- Future<List<UserModel>> getUserApi() async{
+
+ List<Welcome> usersList=[];
+ Future<List<Welcome>> getUserApi() async{
    final response=await http.get(Uri.parse('https://jsonplaceholder.typicode.com/users'));
    var data=jsonDecode(response.body.toString());
 
    if(response.statusCode==200){
-     for(Map i in data){
-       usersList.add(UserModel.fromJson(i));
+     for(Map<String,dynamic> i in data){
+       usersList.add(Welcome.fromJson(i));
      }
    }
    return usersList;
  }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
