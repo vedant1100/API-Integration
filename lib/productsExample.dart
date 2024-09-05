@@ -8,11 +8,11 @@ API is parsed from https://app.quicktype.io/ and model named ProductsModel
  API file location: C:\Users\Admin\StudioProjects\apitutorial\lib\models\API
 */
 
-import 'dart:convert';
-
-import 'package:apitutorial/models/productsModel.dart';
+import 'package:apitutorial/Services/apiController.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
+import 'models/postsModel.dart';
 
 class productsExample extends StatefulWidget {
   const productsExample({super.key});
@@ -22,16 +22,14 @@ class productsExample extends StatefulWidget {
 }
 
 class _productsExampleState extends State<productsExample> {
-  ProductsModel? productsList;
+  List? productsList = [];
 
-  Future getProductApi() async {
-    final response = await http.get(
-        Uri.parse('https://webhook.site/c66bd8fb-ef49-468e-aaa9-9f749785f229'));
-
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      productsList = ProductsModel.fromJson(data);
-    }
+  Future fetchProductApi() async {
+    await Provider.of<productsApiController>(context, listen: false)
+        .getProductApi();
+    var productApi =
+        Provider.of<productsApiController>(context, listen: false).model?.data;
+    productsList = productApi;
   }
 
   @override
@@ -44,36 +42,32 @@ class _productsExampleState extends State<productsExample> {
       body: Column(
         children: [
           FutureBuilder(
-              future: getProductApi(),
+              future: fetchProductApi(),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: CircularProgressIndicator()),
-                  );
-                } else {
-                  return Expanded(
+                return snapshot.connectionState == ConnectionState.waiting
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Expanded(
                       child: ListView.builder(
-                          itemCount: productsList?.data?.length,
+                          itemCount: productsList?.length,
                           itemBuilder: (context, index) {
-                            final dataObj = productsList?.data?[index];
+                            final dataObj = productsList?[index];
                             // print('sale title: ${dataObj?.saleTitle}');
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text(
+                                const Text(
                                   'Sale_title',
                                   style: TextStyle(fontSize: 20),
                                 ),
-                                Text(dataObj?.saleTitle ?? ''),
-                                Text(dataObj?.images?[index].url??''),
+                                Text(dataObj.saleTitle ?? ''),
+                                Text(dataObj.images?[index].url ?? ''),
                               ],
                             );
-                          }));
-                }
+                          }),
+                    );
               })
         ],
       ),
